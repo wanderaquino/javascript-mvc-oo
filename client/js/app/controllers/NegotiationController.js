@@ -10,7 +10,9 @@ class NegotiationController {
         this._negotiationsView = new NegotiationsView(this._negotiationsViewElement);
         this._negotiationMessageView = new MessageView(this._negotiationMessageElement);
         this._negotiationsMessage = new Message();
-        this._negotiationList = new NegotiationList();
+        this._negotiationList = new NegotiationList(() =>{
+            this._negotiationsView.update(this._negotiationList);
+        });
         this._negotiationsView.update(this._negotiationList);
     }
 
