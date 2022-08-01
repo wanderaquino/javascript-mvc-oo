@@ -21,7 +21,6 @@ class NegotiationController {
         
         const negotiation = this._createNegotiation();        
         this._negotiationList.add(negotiation);
-        this._negotiationsView.update(this._negotiationList);
         this._negotiationsMessage.text = "Negociação inserida com sucesso";
         this._negotiationMessageView.update(this._negotiationsMessage.text);
         this._resetForm();
@@ -43,7 +42,6 @@ class NegotiationController {
 
     releaseListOfNegotiations() {
         this._negotiationList.releaseNegotiations();
-        this._negotiationsView.update(this._negotiationList);
         this._negotiationsMessage.text = "Negociações removidas com sucesso.";
         this._negotiationMessageView.update(this._negotiationsMessage.text);
     }
