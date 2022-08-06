@@ -1,12 +1,10 @@
 class NegotiationList {
-    constructor(updateFunction) {
+    constructor() {
         this._negotiations = [];
-        this._updateFunction = updateFunction;
     }
 
     add(negotiation) {
         this._negotiations.push(negotiation);
-        this._updateFunction();
     }
 
     get negotiations() {
@@ -20,6 +18,5 @@ class NegotiationList {
 
     releaseNegotiations() {
         this._negotiations = [];
-        this._updateFunction();
     }
 }
