@@ -10,8 +10,24 @@ class NegotiationController {
         this._negotiationsView = new NegotiationsView(this._negotiationsViewElement);
         this._negotiationMessageView = new MessageView(this._negotiationMessageElement);
         this._negotiationsMessage = new Message();
-        this._negotiationList = new NegotiationList(() =>{
-            this._negotiationsView.update(this._negotiationList);
+
+        this._negotiationList = new Proxy(new NegotiationList(), {
+            get: function(target,prop, receiver) {
+                if(["totalNegotiations"].includes(prop)) {
+                    return function() {
+                        return target[prop]();
+                    }
+                }
+
+                if(["add", "releaseNegotiations"].includes(prop)) {
+                    return function(handleUpdateModel, negotiation = undefined) {
+                        negotiation ? target[prop](negotiation) : target[prop]() ;
+                        handleUpdateModel(target);
+                    };
+                }
+
+                return target[prop];
+            }
         });
         this._negotiationsView.update(this._negotiationList);
     }
@@ -20,7 +36,7 @@ class NegotiationController {
         event.preventDefault();
         
         const negotiation = this._createNegotiation();        
-        this._negotiationList.add(negotiation);
+        this._negotiationList.add((negotiationList) => this._negotiationsView.update(negotiationList), negotiation);
         this._negotiationsMessage.text = "Negociação inserida com sucesso";
         this._negotiationMessageView.update(this._negotiationsMessage.text);
         this._resetForm();
@@ -41,7 +57,7 @@ class NegotiationController {
     }
 
     releaseListOfNegotiations() {
-        this._negotiationList.releaseNegotiations();
+        this._negotiationList.releaseNegotiations((negotiationList) => this._negotiationsView.update(negotiationList));
         this._negotiationsMessage.text = "Negociações removidas com sucesso.";
         this._negotiationMessageView.update(this._negotiationsMessage.text);
     }
