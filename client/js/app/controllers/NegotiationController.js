@@ -9,6 +9,12 @@ class NegotiationController {
 
         this._negotiationsView = new NegotiationsView(this._negotiationsViewElement);
         this._negotiationMessageView = new MessageView(this._negotiationMessageElement);
+        
+        this._negotiationsMessage = ProxyFactory.createProxy(
+            new Message(), 
+            ["text"], 
+            (message) => this._negotiationMessageView.update(message));
+        
         this._negotiationList = ProxyFactory.createProxy(
             new NegotiationList(), 
             ["add","releaseNegotiations"], 
