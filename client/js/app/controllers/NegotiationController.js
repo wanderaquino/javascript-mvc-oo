@@ -11,24 +11,7 @@ class NegotiationController {
         this._negotiationMessageView = new MessageView(this._negotiationMessageElement);
         this._negotiationsMessage = new Message();
 
-        this._negotiationList = new Proxy(new NegotiationList(), {
-            get: function(target,prop, receiver) {
-                if(["totalNegotiations"].includes(prop)) {
-                    return function() {
-                        return target[prop]();
-                    }
-                }
-
-                if(["add", "releaseNegotiations"].includes(prop)) {
-                    return function(handleUpdateModel, negotiation = undefined) {
-                        negotiation ? target[prop](negotiation) : target[prop]() ;
-                        handleUpdateModel(target);
-                    };
-                }
-
-                return target[prop];
-            }
-        });
+        this._negotiationList = ProxyFactory.createProxy(new NegotiationList(), ["add","totalNegotiations","releaseNegotiations"]);
         this._negotiationsView.update(this._negotiationList);
     }
 
