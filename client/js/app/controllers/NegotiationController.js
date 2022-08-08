@@ -20,7 +20,6 @@ class NegotiationController {
             ["add","releaseNegotiations"], 
             (model) => this._negotiationsView.update(model));
 
-        this._negotiationList = ProxyFactory.createProxy(new NegotiationList(), ["add","releaseNegotiations"]);
         this._negotiationsView.update(this._negotiationList);
     }
 
@@ -28,9 +27,8 @@ class NegotiationController {
         event.preventDefault();
         
         const negotiation = this._createNegotiation();        
-        this._negotiationList.add((negotiationList) => this._negotiationsView.update(negotiationList), negotiation);
+        this._negotiationList.add(negotiation);
         this._negotiationsMessage.text = "Negociação inserida com sucesso";
-        this._negotiationMessageView.update(this._negotiationsMessage.text);
         this._resetForm();
     }
 
@@ -51,7 +49,5 @@ class NegotiationController {
     releaseListOfNegotiations() {
         this._negotiationList.releaseNegotiations((negotiationList) => this._negotiationsView.update(negotiationList));
         this._negotiationsMessage.text = "Negociações removidas com sucesso.";
-        this._negotiationMessageView.update(this._negotiationsMessage.text);
     }
-
 }
