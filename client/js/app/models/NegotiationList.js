@@ -1,6 +1,7 @@
 class NegotiationList {
     constructor() {
         this._negotiations = [];
+        this._totalNegotiations = 0;
     }
 
     add(negotiation) {
@@ -12,8 +13,13 @@ class NegotiationList {
         return [].concat(this._negotiations);
     }
 
-    totalNegotiations() {
-        return new Number(this._negotiations.reduce((acc, negotiation) => acc += negotiation.volume, 0))
+    get totalNumberOfNegotiations() {
+        return new Number(this._totalNegotiations);
+    }
+
+    _calcTotalNegotiations() {
+        this._totalNegotiations = this._negotiations.reduce((acc, negotiation) => acc += negotiation.volume, 0);
+
     }
 
     releaseNegotiations() {
