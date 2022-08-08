@@ -32,7 +32,7 @@ class NegotiationsView extends View {
             <tfoot>
                 <td colspan="3">TOTAL</td>
                 <td>${
-                    negotiationModel.totalNegotiations()
+                    negotiationModel.totalNumberOfNegotiations
                 }</td>
             </tfoot>
         </table>`
