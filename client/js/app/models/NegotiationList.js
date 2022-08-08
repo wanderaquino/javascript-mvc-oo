@@ -6,6 +6,7 @@ class NegotiationList {
 
     add(negotiation) {
         this._negotiations.push(negotiation);
+        this._calcTotalNegotiations();
     }
 
     get negotiations() {
@@ -24,5 +25,7 @@ class NegotiationList {
 
     releaseNegotiations() {
         this._negotiations = [];
+        this._calcTotalNegotiations();
+
     }
 }
