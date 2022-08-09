@@ -12,6 +12,6 @@ class MessageView extends View {
     }
 
     update(messageText) {
-       messageText ? this._element.innerHTML = this.template(messageText) : this._element.innerHTML =  "<p> </p>"
+      typeof messageText === "string" ? this._element.innerHTML = this.template(messageText) : this._element.innerHTML =  "<p> </p>"
     }
 }
