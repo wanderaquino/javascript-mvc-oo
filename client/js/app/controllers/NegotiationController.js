@@ -10,29 +10,17 @@ class NegotiationController {
         this._negotiationsView = new NegotiationsView(this._negotiationsViewElement);
         this._negotiationMessageView = new MessageView(this._negotiationMessageElement);
         
-        // this._negotiationsMessage = ProxyFactory.createProxy(
-        //     new Message(),
-        //     ["text"],
-        //     (message) => this._negotiationMessageView.update(message));
-
         this._negotiationsMessage = new Bind(
             new Message(),
             this._negotiationMessageView,
             ["text"]
         )
         
-        // this._negotiationList = ProxyFactory.createProxy(
-        //     new NegotiationList(),
-        //     ["add","releaseNegotiations"],
-        //     (model) => this._negotiationsView.update(model));
-
         this._negotiationList = new Bind(
             new NegotiationList(),
             this._negotiationsView,
             ["add","releaseNegotiations"],
         )
-
-        // this._negotiationsView.update(this._negotiationList);
     }
 
     add(event) {
