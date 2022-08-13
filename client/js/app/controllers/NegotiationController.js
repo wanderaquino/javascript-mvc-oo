@@ -50,4 +50,18 @@ class NegotiationController {
         this._negotiationList.releaseNegotiations((negotiationList) => this._negotiationsView.update(negotiationList));
         this._negotiationsMessage.text = "Negociações removidas com sucesso.";
     }
+
+    negotiationsImport() {
+        const importNegotiationsService = new NegotiationsService();
+        this._negotiationsView.update(this._negotiationList,true);
+
+        importNegotiationsService.importWeeklyNegotiations((error, negotiations) => {
+            if(error) {
+                this._negotiationsMessage.text = "Não foi possível carregar as negociações.";
+                return;
+            }
+            negotiations.forEach(negotiationObject => this._negotiationList.add(negotiationObject));
+            this._negotiationsMessage.text = "Negociações importadas com sucesso.";
+        })
+    }
 }
