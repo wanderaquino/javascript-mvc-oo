@@ -2,9 +2,10 @@ class NegotiationsView extends View {
     constructor (targetElement) {
         super(targetElement);
         this._element = targetElement;
+        this._isFetching = false;
     }
 
-    template(negotiationModel) {
+    template(negotiationModel, isFetching = false) {
         return `
         <table class="table table-hover table-bordered">
             <thead>
@@ -17,7 +18,16 @@ class NegotiationsView extends View {
             </thead>
             
             <tbody>
-            ${
+            ${isFetching ?
+                `
+                <td colspan="4">
+                    <div class="container d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </td>`
+                :
                 negotiationModel.negotiations.map(negotiation => `
                     <tr>
                         <td>${DateHelper.convertDateToString(negotiation.date)}</td>
@@ -38,7 +48,7 @@ class NegotiationsView extends View {
         </table>`
     }
 
-    update(negotiationModel) {
-        this._element.innerHTML = this.template(negotiationModel);
+    update(negotiationModel, shouldLoading) {
+        this._element.innerHTML = this.template(negotiationModel, shouldLoading);
     }
 }
