@@ -1,56 +1,42 @@
 class NegotiationsService {
+    constructor() {
+        this.http = new HttpService();
+    }
+
     importWeeklyNegotiations() {
         return new Promise ((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            let negotiations = [];
-            xhr.open("GET", "negociacoes/semana");
-            xhr.send();
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState === 4) {
-                    if(xhr.status === 200) {
-                        negotiations.push(...JSON.parse(xhr.responseText));
-                        resolve(negotiations.map(negotiation => new Negotiation(new Date(negotiation.data), negotiation.quantidade, negotiation.valor)));
-                    } else {
-                        reject("Não foi possível carregar as negociações da semana.");
-                    }
-                }
-            }
+            this.http
+                .get("negociacoes/semana")
+                .then((negotiations) => {
+                    resolve(negotiations.map(negotiation => new Negotiation(new Date(negotiation.data), negotiation.quantidade, negotiation.valor)));
+                })
+                .catch(() => {
+                    reject("Não foi possível carregar as negociações da semana.");
+                });
         })
     }
     importWeeklyBeforeNegotiations() {
         return new Promise ((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            let negotiations = [];
-            xhr.open("GET", "negociacoes/anterior");
-            xhr.send();
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState === 4) {
-                    if(xhr.status === 200) {
-                        negotiations.push(...JSON.parse(xhr.responseText));
-                        resolve(negotiations.map(negotiation => new Negotiation(new Date(negotiation.data), negotiation.quantidade, negotiation.valor)));
-                    } else {
-                        reject("Não foi possível carregar as negociações da semana anterior.");
-                    }
-                }
-            }
+            this.http
+                .get("negociacoes/anterior")
+                .then((negotiations) => {
+                    resolve(negotiations.map(negotiation => new Negotiation(new Date(negotiation.data), negotiation.quantidade, negotiation.valor)));
+                })
+                .catch(() => {
+                    reject("Não foi possível carregar as negociações da semana anterior.");
+                });
         })
     }
     importWeekBelatedNegotiations() {
         return new Promise ((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            let negotiations = [];
-            xhr.open("GET", "negociacoes/retrasada");
-            xhr.send();
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState === 4) {
-                    if(xhr.status === 200) {
-                        negotiations.push(...JSON.parse(xhr.responseText));
-                        resolve(negotiations.map(negotiation => new Negotiation(new Date(negotiation.data), negotiation.quantidade, negotiation.valor)));
-                    } else {
-                        reject("Não foi possível carregar as negociações da semana retrasada.");
-                    }
-                }
-            }
+            this.http
+                .get("negociacoes/retrasada")
+                .then((negotiations) => {
+                    resolve(negotiations.map(negotiation => new Negotiation(new Date(negotiation.data), negotiation.quantidade, negotiation.valor)));
+                })
+                .catch(() => {
+                    reject("Não foi possível carregar as negociações da semana retrasada.");
+                });
         })
     }
 }
