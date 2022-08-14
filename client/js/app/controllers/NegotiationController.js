@@ -55,12 +55,31 @@ class NegotiationController {
         const importNegotiationsService = new NegotiationsService();
         this._negotiationsView.update(this._negotiationList,true);
 
-        importNegotiationsService.importWeeklyNegotiations().then((negotiations) => {              
+        Promise.all(
+        [
+            importNegotiationsService.importWeeklyNegotiations()
+                .then((negotiations) => {              
+                    negotiations.forEach(negotiationObject => this._negotiationList.add(negotiationObject));
+                })
+                .catch((error) => {
+                    this._negotiationMessageView.text = error;
+                }),
+            importNegotiationsService.importWeeklyBeforeNegotiations()
+                .then((negotiations) => {              
                 negotiations.forEach(negotiationObject => this._negotiationList.add(negotiationObject));
-                this._negotiationsMessage.text = "Negociações da semana importadas com sucesso.";
             })
-            .catch((error) => {
-                this._negotiationMessageView.text = error;
+                .catch((error) => {
+                    this._negotiationMessageView.text = error;
+                }),
+            importNegotiationsService.importWeekBelatedNegotiations()
+                .then((negotiations) => {              
+                negotiations.forEach(negotiationObject => this._negotiationList.add(negotiationObject));
             })
+                .catch((error) => {
+                    this._negotiationMessageView.text = error;
+                })
+        ]).then(() => {
+            this._negotiationsMessage.text = "Negociações importadas com sucesso.";
+        })
     }
 }
